@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Node-RED interne Dateien (nicht versionieren)
+resources/.config*
+resources/context/
+resources/lib/
+resources/.sessions*
+resources/.node-red-lock*
+resources/.flows*
+resources/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
