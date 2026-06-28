@@ -129,3 +129,71 @@
 .el-badge--warn    { --el-badge-bg: var(--el-badge-warn-bg);  --el-badge-text: var(--el-badge-warn-text); }
 .el-badge--err     { --el-badge-bg: var(--el-badge-err-bg);   --el-badge-text: var(--el-badge-err-text); }
 .el-badge--unknown { --el-badge-bg: var(--el-badge-off-bg);   --el-badge-text: var(--color-text-muted); }
+
+/* ===== el-value-display ===== */
+.el-value-display {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+.el-value-display__number {
+  font-size: var(--el-value-display-size);
+  font-weight: 700;
+  color: var(--el-value-display-color);
+  font-variant-numeric: tabular-nums;
+}
+.el-value-display__unit {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* ===== el-gauge ===== */
+.el-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--el-gauge-width);
+}
+.el-gauge__svg { width: 100%; }
+.el-gauge__track {
+  fill: none;
+  stroke: var(--el-gauge-track);
+  stroke-width: var(--el-gauge-stroke);
+}
+.el-gauge__fill {
+  fill: none;
+  stroke: var(--el-gauge-fill);
+  stroke-width: var(--el-gauge-stroke);
+  transition: d 0.3s ease;
+}
+.el-gauge__value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.el-gauge__unit {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+/* ===== el-stepper ===== */
+.el-stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+.el-stepper__btn {
+  min-width: var(--el-stepper-btn-size) !important;
+  height: var(--el-stepper-btn-size) !important;
+  background: var(--el-button-bg) !important;
+  color: var(--el-button-text) !important;
+}
+.el-stepper__value {
+  min-width: 3ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+/* ===== el-slider ===== */
+.el-slider { flex: 1; }

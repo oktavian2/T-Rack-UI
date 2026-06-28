@@ -59,4 +59,17 @@
   --el-panel-radius:  var(--radius-md);
   --el-panel-padding: var(--spacing-md);
   --el-panel-bg:      rgba(255, 255, 255, 0.03);
+
+  /* === el-value-display === */
+  --el-value-display-size:  2rem;
+  --el-value-display-color: var(--color-accent);
+
+  /* === el-gauge === */
+  --el-gauge-width:  120px;
+  --el-gauge-stroke: 7px;
+  --el-gauge-track:  var(--color-border);
+  --el-gauge-fill:   var(--color-accent);
+
+  /* === el-stepper === */
+  --el-stepper-btn-size: 32px;
 }

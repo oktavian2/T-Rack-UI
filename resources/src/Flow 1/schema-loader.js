@@ -124,6 +124,16 @@ flow.set("schemas", {
                         ]
                     },
                     {
+                        title: "value-display / progress-bar / slider / gauge / stepper \u2014 Welle 1",
+                        elements: [
+                            { id: "rpm",   type: "value-display", label: "Drehzahl",           unit: "rpm", rw: "read",  onChange: "demoRead" },
+                            { id: "load",  type: "progress-bar",  label: "Auslastung (%)",                   rw: "read",  onChange: "demoRead" },
+                            { id: "speed", type: "slider",        label: "Sollgeschwindigkeit", min: 0, max: 200, step: 5, onChange: "demoWrite", commit: "immediate" },
+                            { id: "temp",  type: "gauge",         label: "Temperatur",          unit: "\u00b0C", min: 0, max: 150, rw: "read", onChange: "demoRead" },
+                            { id: "count", type: "stepper",       label: "Schritte",            min: 0, max: 50, default: 5, onChange: "demoWrite", commit: "immediate" }
+                        ]
+                    },
+                    {
                         title: "led / badge / status-panel \u2014 komplexe Elemente",
                         elements: [
                             { id: "fb",       type: "led",          label: "R\u00fcckm. {ch}",
@@ -166,6 +176,13 @@ flow.set("schemas", {
                         ]
                     },
                     {
+                        title: "Welle-1-Konfiguration",
+                        elements: [
+                            { id: "rpm_max",   type: "numeric", label: "Drehzahl-Limit (rpm)",           min: 0, max: 10000, default: 3000, onChange: "demoConfig", commit: "onSave" },
+                            { id: "temp_warn", type: "numeric", label: "Temperatur-Warnschwelle (\u00b0C)", min: 0, max: 150,   default: 80,   onChange: "demoConfig", commit: "onSave" }
+                        ]
+                    },
+                    {
                         title: "Gemischt \u2014 immediate vs. onSave in einer Gruppe",
                         elements: [
                             { id: "live_offset", type: "numeric", label: "Live-Offset (sofort)",
@@ -174,6 +191,14 @@ flow.set("schemas", {
                             { id: "saved_gain", type: "numeric", label: "Verstaerkung (erst speichern)",
                               min: 1, max: 10, default: 1,
                               onChange: "demoConfig", commit: "onSave" }
+                        ]
+                    },
+                    {
+                        title: "Noch was - durcheinander",
+                        elements: [
+                            { id: "gauge1",    type: "gauge",   label: "Drehzahl",   unit: "rpm", min: 0, max: 5000, rw: "read", onChange: "demoRead" },
+                            { id: "gauge2",    type: "gauge",   label: "Drehmoment", unit: "Nm",  min: 0, max: 350,  rw: "read", onChange: "demoRead" },
+                            { id: "temp_warn", type: "numeric", label: "Temperatur-Warnschwelle (\u00b0C)", min: 0, max: 150, default: 80, onChange: "demoConfig", commit: "onSave" }
                         ]
                     }
                 ]

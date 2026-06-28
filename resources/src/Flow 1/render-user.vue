@@ -1,14 +1,3 @@
-<!-- ============================================================
-     UI-TEMPLATE NODE: render-user
-     Template Type:  "Widget in group"  (templateScope: widget)
-     Group:          User View  (Page: User, /dashboard/user)
-     Eingang:        instance-builder  (empfaengt tabs[] als msg.payload)
-     Ausgang:        -> dispatcher
-     ------------------------------------------------------------
-     Reiner Renderer. Kein kartenspezifisches Wissen.
-     Unterschied zu render-config: nur  t.user  statt  t.config.
-     ============================================================ -->
-
 <template>
   <div class="poc-root">
     <v-tabs v-model="active" density="compact">
@@ -59,6 +48,47 @@
               </div>
             </div>
           </template>
+
+          <template v-else-if="el.template === 'value-display'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <div class="el-value-display">
+              <span class="el-value-display__number">{{ state[el.topic] ?? '—' }}</span>
+              <span v-if="el.unit" class="el-value-display__unit">{{ el.unit }}</span>
+            </div>
+          </template>
+
+          <template v-else-if="el.template === 'gauge'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <div class="el-gauge">
+              <svg viewBox="0 0 100 65" class="el-gauge__svg">
+                <path d="M5.2,58.1 A45,45 0 0,1 94.8,58.1" class="el-gauge__track" stroke-linecap="round" />
+                <path :d="gaugeArc(state[el.topic], el.min, el.max)" class="el-gauge__fill" stroke-linecap="round" />
+              </svg>
+              <span class="el-gauge__value">{{ state[el.topic] ?? '—' }}<span v-if="el.unit" class="el-gauge__unit"> {{ el.unit }}</span></span>
+            </div>
+          </template>
+
+          <template v-else-if="el.template === 'slider'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <v-slider
+              class="el-slider"
+              :model-value="state[el.topic] !== undefined ? state[el.topic] : el.value"
+              :min="el.min ?? 0"
+              :max="el.max ?? 100"
+              :step="el.step ?? 1"
+              hide-details
+              @update:modelValue="v => onEvent(el, v)"
+            />
+          </template>
+
+          <template v-else-if="el.template === 'stepper'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <div class="el-stepper">
+              <v-btn class="el-stepper__btn" density="compact" @click="onStep(el, -1)">−</v-btn>
+              <span class="el-stepper__value">{{ state[el.topic] ?? el.value ?? 0 }}</span>
+              <v-btn class="el-stepper__btn" density="compact" @click="onStep(el, +1)">+</v-btn>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -80,10 +110,23 @@ export default {
   },
   methods: {
     onEvent(el, v) {
-      // lokalen Anzeige-State aktualisieren
       this.state = Object.assign({}, this.state, { [el.topic]: v });
-      // Projekt-Konvention: msg.topic = Adresse, msg.payload = Wert
       this.send({ topic: el.topic, payload: v });
+    },
+    onStep(el, delta) {
+      const cur = Number(this.state[el.topic] ?? el.value ?? 0);
+      const next = Math.min(el.max ?? Infinity, Math.max(el.min ?? -Infinity, cur + (el.step ?? 1) * delta));
+      this.onEvent(el, next);
+    },
+    gaugeArc(value, min = 0, max = 100) {
+      const v = value ?? min;
+      const pct = Math.min(1, Math.max(0, (v - min) / (max - min)));
+      if (pct <= 0) return 'M5.2,58.1 A45,45 0 0,1 5.2,58.1';
+      const angleDeg = 175 - pct * 170;
+      const rad = angleDeg * Math.PI / 180;
+      const x = (50 + 45 * Math.cos(rad)).toFixed(1);
+      const y = (62 - 45 * Math.sin(rad)).toFixed(1);
+      return `M5.2,58.1 A45,45 0 0,1 ${x},${y}`;
     }
   }
 };
