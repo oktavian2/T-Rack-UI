@@ -1,0 +1,391 @@
+[
+    {
+        "id": "a422b17cf7dde7df",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "320d0497c1071d7b",
+        "type": "ui-base",
+        "name": "Mein Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "1f269c78a4a3fc09",
+        "type": "ui-theme",
+        "name": "Standardthema",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "be8dad29bfbf4e16",
+        "type": "ui-page",
+        "name": "Seite 1",
+        "ui": "320d0497c1071d7b",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "1f269c78a4a3fc09",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "afc61f3352437997",
+        "type": "ui-group",
+        "name": "Gruppe 1",
+        "page": "be8dad29bfbf4e16",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default"
+    },
+    {
+        "id": "2f08950818423c63",
+        "type": "ui-page",
+        "name": "Seite 2",
+        "ui": "320d0497c1071d7b",
+        "path": "/page2",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "1f269c78a4a3fc09",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "2663c52f18f0fd13",
+        "type": "ui-group",
+        "name": "Gruppe 2",
+        "page": "2f08950818423c63",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "ad1c38e7c257e90c",
+        "type": "inject",
+        "z": "a422b17cf7dde7df",
+        "name": "boot",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 140,
+        "wires": [
+            [
+                "d9ebac87697f6347"
+            ]
+        ]
+    },
+    {
+        "id": "d9ebac87697f6347",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "discovery mock",
+        "func": "// ============================================================\n// FUNCTION NODE: discovery-mock\n// Eingang:  inject \"boot\"\n// Ausgang:  -> schema-loader\n// ------------------------------------------------------------\n// PoC: Hardware fest verdrahtet.\n// Spaeter durch echten I2C-Scan / EEPROM-Read ersetzen.\n// Nur DIESE Node tauschen, der Rest bleibt unveraendert.\n// ============================================================\n\nmsg.discovery = [\n    { slot: 1, type: \"relay\" },\n    { slot: 2, type: \"current\" },\n    { slot: 3, type: \"demo\"}\n];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 140,
+        "wires": [
+            [
+                "c8f490f19540418c"
+            ]
+        ]
+    },
+    {
+        "id": "c8f490f19540418c",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "schema-loader",
+        "func": "// ============================================================\n// FUNCTION NODE: schema-loader\n// Eingang:  discovery-mock\n// Ausgang:  -> instance-builder\n// ------------------------------------------------------------\n// PoC: Schemas + Registry + Actions inline.\n// Spaeter: aus cards/*.json + registry/elements.json laden\n//          (file in / fs-Modul) statt inline.\n// ============================================================\n\n// ---- Karten-Schemas ----------------------------------------\nflow.set(\"schemas\", {\n    relay: {\n        cardType: \"relay\",\n        displayName: \"Relaiskarte\",\n        version: \"1.0\",\n        io: { channels: 4, protocol: \"i2c\" },\n        views: {\n            user: {\n                groups: [\n                    {\n                        title: \"Relais\",\n                        elements: [\n                            { id: \"relay\", type: \"toggle\", label: \"Relais {ch}\",\n                              repeat: \"channels\", rw: \"write\",\n                              onChange: \"writeRelay\", commit: \"immediate\" }\n                        ]\n                    },\n                    {\n                        title: \"default state\",\n                        elements: [\n                            { id: \"state\", type: \"toggle\", label: \"Default state Relais {ch}\", repeat: \"channels\", rw: \"write\"}\n                        ]\n                    },\n                    {\n                        title: \"Steuerung\",\n                        elements: [\n                            { id: \"log_start\", type: \"button\", label: \"Log starten\",\n                              onClick: \"startLog\" }\n                        ]\n                    }\n                ]\n            },\n            config: {\n                groups: [\n                    {\n                        title: \"Kanal-Setup\",\n                        elements: [\n                            { id: \"mode\", type: \"dropdown\", label: \"Modus {ch}\",\n                              repeat: \"channels\", options: [\"NO\", \"NC\"], default: \"NO\",\n                              onChange: \"setMode\", commit: \"onSave\" },\n                            { id: \"debounce\", type: \"numeric\", label: \"Entprellzeit {ch} (ms)\",\n                              repeat: \"channels\", min: 0, max: 1000, default: 50,\n                              onChange: \"setDebounce\", commit: \"onSave\" }\n                        ]\n                    }\n                ]\n            }\n        }\n    },\n    current: {\n        cardType: \"current\",\n        displayName: \"Strommesskarte\",\n        version: \"1.0\",\n        io: { channels: 2, protocol: \"i2c\" },\n        views: {\n            user: {\n                groups: [\n                    {\n                        title: \"Messwerte\",\n                        elements: [\n                            { id: \"current\", type: \"output\", label: \"Strom {ch} (A)\",\n                              repeat: \"channels\", rw: \"read\", onChange: \"readCurrent\" }\n                        ]\n                    }\n                ]\n            },\n            config: {\n                groups: [\n                    {\n                        title: \"Messbereich\",\n                        elements: [\n                            { id: \"range\", type: \"dropdown\", label: \"Bereich {ch}\",\n                              repeat: \"channels\", options: [\"1A\", \"10A\", \"50A\"], default: \"10A\",\n                              onChange: \"setRange\", commit: \"onSave\" },\n                            { id: \"samplerate\", type: \"numeric\", label: \"Samplerate {ch} (Hz)\",\n                              repeat: \"channels\", min: 1, max: 1000, default: 100,\n                              onChange: \"setSampleRate\", commit: \"onSave\" }\n                        ]\n                    }\n                ]\n            }\n        }\n    },\n    demo: {\n        cardType: \"demo\",\n        displayName: \"Demo-Karte (alle Elemente)\",\n        version: \"1.0\",\n        io: { channels: 3, protocol: \"i2c\" },\n        views: {\n            user: {\n                groups: [\n                    {\n                        title: \"toggle \\u2014 Ein/Aus-Schalter\",\n                        elements: [\n                            { id: \"power\", type: \"toggle\", label: \"Hauptschalter\",\n                              onChange: \"demoWrite\", commit: \"immediate\" },\n                            { id: \"relay\", type: \"toggle\", label: \"Kanal {ch}\",\n                              repeat: \"channels\", onChange: \"demoWrite\", commit: \"immediate\" }\n                        ]\n                    },\n                    {\n                        title: \"button \\u2014 Aktion ausloesen\",\n                        elements: [\n                            { id: \"start\", type: \"button\", label: \"Start\", onClick: \"demoAction\" },\n                            { id: \"stop\",  type: \"button\", label: \"Stopp\", onClick: \"demoAction\" }\n                        ]\n                    },\n                    {\n                        title: \"output \\u2014 Nur-Lese-Anzeige (Messwerte)\",\n                        elements: [\n                            { id: \"value\", type: \"output\", label: \"Messwert {ch}\",\n                              repeat: \"channels\", rw: \"read\", onChange: \"demoRead\" }\n                        ]\n                    }\n                ]\n            },\n            config: {\n                groups: [\n                    {\n                        title: \"numeric \\u2014 Zahleneingabe mit Grenzen\",\n                        elements: [\n                            { id: \"threshold\", type: \"numeric\", label: \"Schwellwert (global)\",\n                              min: 0, max: 100, step: 1, default: 50,\n                              onChange: \"demoConfig\", commit: \"onSave\" },\n                            { id: \"delay\", type: \"numeric\", label: \"Verzoegerung {ch} (ms)\",\n                              repeat: \"channels\", min: 0, max: 5000, step: 10, default: 100,\n                              onChange: \"demoConfig\", commit: \"onSave\" }\n                        ]\n                    },\n                    {\n                        title: \"dropdown \\u2014 Auswahl aus festen Optionen\",\n                        elements: [\n                            { id: \"mode\", type: \"dropdown\", label: \"Betriebsmodus\",\n                              options: [\"Auto\", \"Manuell\", \"Aus\"], default: \"Auto\",\n                              onChange: \"demoConfig\", commit: \"onSave\" },\n                            { id: \"range\", type: \"dropdown\", label: \"Bereich {ch}\",\n                              repeat: \"channels\", options: [\"niedrig\", \"mittel\", \"hoch\"], default: \"mittel\",\n                              onChange: \"demoConfig\", commit: \"onSave\" }\n                        ]\n                    },\n                    {\n                        title: \"Gemischt \\u2014 immediate vs. onSave in einer Gruppe\",\n                        elements: [\n                            { id: \"live_offset\", type: \"numeric\", label: \"Live-Offset (sofort)\",\n                              min: -50, max: 50, default: 0,\n                              onChange: \"demoConfig\", commit: \"immediate\" },\n                            { id: \"saved_gain\", type: \"numeric\", label: \"Verstaerkung (erst speichern)\",\n                              min: 1, max: 10, default: 1,\n                              onChange: \"demoConfig\", commit: \"onSave\" }\n                        ]\n                    }\n                ]\n            }\n        }\n    }\n\n});\n\n// ---- Element-Registry (Aufbau / Defaults / cssClass) -------\nflow.set(\"registry\", {\n    toggle:   { component: \"v-switch\",     cssClass: \"el-toggle\",\n                defaults: { color: \"var(--accent)\", inset: true, hideDetails: true },\n                emits: \"update:modelValue\" },\n    button:   { component: \"v-btn\",        cssClass: \"el-button\",\n                defaults: { variant: \"flat\" },\n                emits: \"click\" },\n    numeric:  { component: \"v-text-field\", cssClass: \"el-numeric\",\n                defaults: { type: \"number\", variant: \"outlined\", density: \"compact\", hideDetails: true },\n                emits: \"update:modelValue\" },\n    dropdown: { component: \"v-select\",     cssClass: \"el-dropdown\",\n                defaults: { variant: \"outlined\", density: \"compact\", hideDetails: true },\n                emits: \"update:modelValue\" },\n    output:   { component: \"v-text-field\", cssClass: \"el-output\",\n                defaults: { readonly: true, variant: \"plain\", density: \"compact\", hideDetails: true },\n                emits: \"update:modelValue\" }\n});\n\n// ---- Action-Registry (Verhalten bei Interaktion) -----------\nflow.set(\"actions\", {\n    writeRelay:    function (c) { return { target: \"io\",     op: \"write\",  addr: c.addr, value: c.value }; },\n    setMode:       function (c) { return { target: \"io\",     op: \"config\", addr: c.addr, field: \"mode\",       value: c.value }; },\n    setDebounce:   function (c) { return { target: \"io\",     op: \"config\", addr: c.addr, field: \"debounce\",   value: c.value }; },\n    setRange:      function (c) { return { target: \"io\",     op: \"config\", addr: c.addr, field: \"range\",      value: c.value }; },\n    setSampleRate: function (c) { return { target: \"io\",     op: \"config\", addr: c.addr, field: \"samplerate\", value: c.value }; },\n    readCurrent:   function (c) { return { target: \"io\",     op: \"read\",   addr: c.addr }; },\n    startLog:      function (c) { return { target: \"logger\", op: \"start\",  slot: c.slot }; },\n\n    // ---- Demo-Karte ----\n    demoWrite:     function (c) { return { target: \"io\",     op: \"write\",  addr: c.addr, value: c.value }; },\n    demoConfig:    function (c) { return { target: \"io\",     op: \"config\", addr: c.addr, value: c.value }; },\n    demoRead:      function (c) { return { target: \"io\",     op: \"read\",   addr: c.addr }; },\n    demoAction:    function (c) { return { target: \"logger\", op: \"action\", addr: c.addr }; }\n});\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 140,
+        "wires": [
+            [
+                "050c7c15e67f7f30"
+            ]
+        ]
+    },
+    {
+        "id": "050c7c15e67f7f30",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "instance-builder",
+        "func": "// ============================================================\n// FUNCTION NODE: instance-builder\n// Eingang:  schema-loader\n// Ausgang:  -> render-user  UND  render-config  (zwei Drähte\n//              vom selben Ausgang, oder 2 Outputs - hier 1 Output,\n//              beide Templates am selben Draht)\n// ------------------------------------------------------------\n// Kernlogik: Discovery + Schemas + Registry  ->  tabs[]\n// - klont pro Slot das Schema\n// - vergibt Slash-Topics im Projekt-Stil: slot1/relay/1 (kollisionsfrei)\n// - expandiert repeat -> {ch}\n// - merged Registry-Eintrag (component/cssClass/defaults/emits)\n// - schreibt flow.instances (Meta fuer den Dispatcher, Key = Topic)\n// ============================================================\n\nconst slots     = msg.discovery;\nconst schemas   = flow.get(\"schemas\");\nconst registry  = flow.get(\"registry\");\nconst tabs      = [];\nconst instances = {};\n\nfunction expand(view, slot, prefix, io) {\n    const groups = [];\n    for (const g of view.groups) {\n        const els = [];\n        for (const el of g.elements) {\n            const count = el.repeat === \"channels\" ? io.channels : 1;\n            for (let ch = 1; ch <= count; ch++) {\n                const reg = registry[el.type] || {};\n                // Slash-Topic im Projekt-Stil (kompakt): slot1/relay/1\n                const topic = el.repeat\n                    ? prefix + \"/\" + el.id + \"/\" + ch\n                    : prefix + \"/\" + el.id;\n\n                els.push(Object.assign({}, el, {\n                    topic:     topic,\n                    label:     (el.label || \"\").replace(\"{ch}\", ch),\n                    component: reg.component,\n                    cssClass:  reg.cssClass,\n                    emits:     reg.emits,\n                    defaults:  reg.defaults || {},\n                    value:     el.default !== undefined ? el.default : null\n                }));\n\n                instances[topic] = {\n                    slot:   slot,\n                    addr:   topic,                    // PoC: Topic == Adresse\n                    action: el.onChange || el.onClick || null,\n                    commit: el.commit || \"immediate\"\n                };\n            }\n        }\n        groups.push({ title: g.title, elements: els });\n    }\n    return { groups: groups };\n}\n\nfor (const s of slots) {\n    const schema = JSON.parse(JSON.stringify(schemas[s.type]));\n    const tabId  = \"slot\" + s.slot + \"_\" + s.type;   // interne Tab-ID (kein Topic)\n    const prefix = \"slot\" + s.slot;                  // Topic-Praefix: slot1/...\n    tabs.push({\n        tabId: tabId,\n        title: schema.displayName + \" (Slot \" + s.slot + \")\",\n        user:   expand(schema.views.user,   s.slot, prefix, schema.io),\n        config: expand(schema.views.config, s.slot, prefix, schema.io)\n    });\n}\n\nflow.set(\"instances\", instances);\nmsg.payload = tabs;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 140,
+        "wires": [
+            [
+                "26546770cd89b572",
+                "2d85919e8333be32"
+            ]
+        ]
+    },
+    {
+        "id": "26546770cd89b572",
+        "type": "ui-template",
+        "z": "a422b17cf7dde7df",
+        "group": "afc61f3352437997",
+        "page": "",
+        "ui": "",
+        "name": "render-user",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "<!-- ============================================================\n     UI-TEMPLATE NODE: render-user\n     Template Type:  \"Widget in group\"  (templateScope: widget)\n     Group:          User View  (Page: User, /dashboard/user)\n     Eingang:        instance-builder  (empfaengt tabs[] als msg.payload)\n     Ausgang:        -> dispatcher\n     ------------------------------------------------------------\n     Reiner Renderer. Kein kartenspezifisches Wissen.\n     Unterschied zu render-config: nur  t.user  statt  t.config.\n     ============================================================ -->\n\n<template>\n  <div class=\"poc-root\">\n    <v-tabs v-model=\"active\" density=\"compact\">\n      <v-tab v-for=\"t in tabs\" :key=\"t.tabId\" :value=\"t.tabId\">{{ t.title }}</v-tab>\n    </v-tabs>\n\n    <div v-for=\"t in tabs\" :key=\"t.tabId\" v-show=\"active === t.tabId\" class=\"poc-tab\">\n      <div v-for=\"g in t.user.groups\" :key=\"g.title\" class=\"poc-group\">\n        <h3 class=\"poc-group-title\">{{ g.title }}</h3>\n        <div v-for=\"el in g.elements\" :key=\"el.topic\" class=\"poc-el\">\n          <component\n            :is=\"el.component\"\n            :class=\"el.cssClass\"\n            :label=\"el.label\"\n            :items=\"el.options\"\n            :min=\"el.min\" :max=\"el.max\"\n            v-bind=\"el.defaults\"\n            :model-value=\"state[el.topic] !== undefined ? state[el.topic] : el.value\"\n            @[el.emits]=\"v => onEvent(el, v)\"\n          >{{ el.type === 'button' ? el.label : '' }}</component>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return { tabs: [], active: null, state: {} };\n  },\n  watch: {\n    msg(m) {\n      if (m && Array.isArray(m.payload)) {\n        this.tabs = m.payload;\n        if (!this.active && this.tabs.length) this.active = this.tabs[0].tabId;\n      }\n    }\n  },\n  methods: {\n    onEvent(el, v) {\n      // lokalen Anzeige-State aktualisieren\n      this.state = Object.assign({}, this.state, { [el.topic]: v });\n      // Projekt-Konvention: msg.topic = Adresse, msg.payload = Wert\n      this.send({ topic: el.topic, payload: v });\n    }\n  }\n};\n</script>",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 510,
+        "y": 280,
+        "wires": [
+            [
+                "5aeae4de57d4e0b9",
+                "66087b63f6a20005"
+            ]
+        ]
+    },
+    {
+        "id": "2d85919e8333be32",
+        "type": "ui-template",
+        "z": "a422b17cf7dde7df",
+        "group": "2663c52f18f0fd13",
+        "page": "",
+        "ui": "",
+        "name": "render-config",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "<!-- ============================================================\n     UI-TEMPLATE NODE: render-config\n     Template Type:  \"Widget in group\"  (templateScope: widget)\n     Group:          Config View  (Page: Config, /dashboard/config)\n     Eingang:        instance-builder  (empfaengt tabs[] als msg.payload)\n     Ausgang:        -> dispatcher\n     ------------------------------------------------------------\n     Identisch zu render-user, EINZIGER Unterschied: t.config\n     statt t.user. (Bewusst dupliziert, damit jede Page ihre\n     eigene Template-Node hat. Wer DRY will, kann das View-Feld\n     auch per msg-Property steuern.)\n     ============================================================ -->\n\n<template>\n  <div class=\"poc-root\">\n    <v-tabs v-model=\"active\" density=\"compact\">\n      <v-tab v-for=\"t in tabs\" :key=\"t.tabId\" :value=\"t.tabId\">{{ t.title }}</v-tab>\n    </v-tabs>\n\n    <div v-for=\"t in tabs\" :key=\"t.tabId\" v-show=\"active === t.tabId\" class=\"poc-tab\">\n      <div v-for=\"g in t.config.groups\" :key=\"g.title\" class=\"poc-group\">\n        <h3 class=\"poc-group-title\">{{ g.title }}</h3>\n        <div v-for=\"el in g.elements\" :key=\"el.topic\" class=\"poc-el\">\n          <component\n            :is=\"el.component\"\n            :class=\"el.cssClass\"\n            :label=\"el.label\"\n            :items=\"el.options\"\n            :min=\"el.min\" :max=\"el.max\"\n            v-bind=\"el.defaults\"\n            :model-value=\"state[el.topic] !== undefined ? state[el.topic] : el.value\"\n            @[el.emits]=\"v => onEvent(el, v)\"\n          >{{ el.type === 'button' ? el.label : '' }}</component>\n        </div>\n      </div>\n    </div>\n\n    <!-- Speichern-Button leert den onSave-Puffer (forceCommit). -->\n    <v-btn class=\"el-button\" @click=\"saveAll\">Speichern</v-btn>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return { tabs: [], active: null, state: {} };\n  },\n  watch: {\n    msg(m) {\n      if (m && Array.isArray(m.payload)) {\n        this.tabs = m.payload;\n        if (!this.active && this.tabs.length) this.active = this.tabs[0].tabId;\n      }\n    }\n  },\n  methods: {\n    onEvent(el, v) {\n      this.state = Object.assign({}, this.state, { [el.topic]: v });\n      // Projekt-Konvention: msg.topic = Adresse, msg.payload = Wert\n      this.send({ topic: el.topic, payload: v });\n    },\n    saveAll() {\n      // alle aktuell sichtbaren Werte mit forceCommit durchschicken\n      for (const topic in this.state) {\n        this.send({ topic: topic, payload: this.state[topic], forceCommit: true });\n      }\n    }\n  }\n};\n</script>",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 770,
+        "y": 280,
+        "wires": [
+            [
+                "5aeae4de57d4e0b9"
+            ]
+        ]
+    },
+    {
+        "id": "5aeae4de57d4e0b9",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "dispatcher",
+        "func": "// ============================================================\n// FUNCTION NODE: dispatcher\n// Eingang:  render-user / render-config (Element-Events)\n// Ausgang:  -> switch \"target\"\n// ------------------------------------------------------------\n// Projekt-Konvention: msg.topic = Adresse, msg.payload = Wert.\n// commit-Steuerung: \"immediate\" schreibt sofort,\n//                   \"onSave\" puffert bis msg.forceCommit.\n// ============================================================\n\nconst topic   = msg.topic;                         // z.B. \"slot1/relay/1\"\nconst value   = msg.payload;                       // reiner Wert\nconst meta    = (flow.get(\"instances\") || {})[topic];\nconst actions = flow.get(\"actions\") || {};\n\nif (!meta) {\n    node.warn(\"Unbekanntes Topic: \" + topic);\n    return null;\n}\n\n// onSave: puffern statt sofort schreiben\nif (meta.commit === \"onSave\" && !msg.forceCommit) {\n    const buf = flow.get(\"pending\") || {};\n    buf[topic] = value;\n    flow.set(\"pending\", buf);\n    node.status({ fill: \"yellow\", shape: \"ring\", text: \"gepuffert: \" + topic });\n    return null;\n}\n\nconst fn = actions[meta.action];\nif (!fn) {\n    node.warn(\"Unbekannte Aktion: \" + meta.action);\n    return null;\n}\n\n// Ergebnis: msg.topic bleibt erhalten, msg.payload = Kommando-Objekt\nmsg.payload = fn({\n    topic: topic,\n    value: value,\n    slot:  meta.slot,\n    addr:  meta.addr\n});\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 480,
+        "wires": [
+            [
+                "6ba44cd6e61dcc52"
+            ]
+        ]
+    },
+    {
+        "id": "6ba44cd6e61dcc52",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "io sim",
+        "func": "// ============================================================\n// FUNCTION NODE: io-sim\n// Eingang:  switch \"target\" (Ausgang 1: io)\n// Ausgang:  -> debug \"out\"\n// ------------------------------------------------------------\n// Simuliert Hardware-Zugriff.\n// Spaeter: durch node-red-contrib-i2c ersetzen,\n//          addr aus instanceKey auf echte Register mappen.\n// ============================================================\n\nconst p = msg.payload;\nconst store = flow.get(\"io_state\") || {};\n\nif (p.op === \"write\" || p.op === \"config\") {\n    const k = p.addr + (p.field ? \":\" + p.field : \"\");\n    store[k] = p.value;\n    flow.set(\"io_state\", store);\n    node.warn(\"IO \" + p.op + \" -> \" + p.addr + (p.field ? (\".\" + p.field) : \"\") + \" = \" + p.value);\n\n} else if (p.op === \"read\") {\n    const val = (Math.random() * 10).toFixed(2);   // Fake-Messwert\n    node.warn(\"IO read <- \" + p.addr + \" = \" + val + \" A\");\n    msg.payload = { addr: p.addr, value: val };\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 480,
+        "wires": [
+            [
+                "e66881794fd36843"
+            ]
+        ]
+    },
+    {
+        "id": "e66881794fd36843",
+        "type": "function",
+        "z": "a422b17cf7dde7df",
+        "name": "logger",
+        "func": "// ============================================================\n// FUNCTION NODE: logger-sim\n// Eingang:  switch \"target\" (Ausgang 2: logger)\n// Ausgang:  -> debug \"out\"\n// ------------------------------------------------------------\n// Simuliert den Logger-Start.\n// Spaeter: echtes Logging / File-Write anbinden.\n// ============================================================\n\nnode.warn(\"LOGGER \" + msg.payload.op + \" (Slot \" + msg.payload.slot + \")\");\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cb4bafe66d40e3e4",
+        "type": "ui-template",
+        "z": "a422b17cf7dde7df",
+        "group": "",
+        "page": "",
+        "ui": "320d0497c1071d7b",
+        "name": "style",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "/* ============================================================\n   UI-TEMPLATE NODE: css-theme+elements\n   Template Type:  \"CSS (all pages)\"  -> templateScope: site\n   WICHTIG: reines CSS, KEIN <style>-Wrapper (sonst Syntaxfehler).\n   Keine Drähte noetig.\n   ------------------------------------------------------------\n   EINZIGES Theme: Drive Net Lab Corporate Design (Brand Guidelines V1.0).\n   Variablen-Namespace: --led-*\n   Farben:\n     Velocity Green  #13a538  Primaer-Akzent\n     Volt Lime       #afcb37  Sekundaer-Akzent\n     Asphalt Teal    #012229  Hintergrund / dunkel\n     Ignition Orange #ec6726  Signal / Warnung\n   Fonts: Magistral (Corporate), Roboto (Web/Dokumente, Fallback)\n   ============================================================ */\n\n/* ===== THEME : nur Variablen (Drive Net Lab) ===== */\n:root,\n[data-theme=\"drivenetlab\"] {\n  /* Marken-Kernfarben */\n  --led-velocity-green: #13a538;\n  --led-volt-lime:      #afcb37;\n  --led-asphalt-teal:   #012229;\n  --led-ignition-orange:#ec6726;\n\n  /* Funktionale Zuweisungen */\n  --led-accent:        var(--led-velocity-green);\n  --led-accent-2:      var(--led-volt-lime);\n  --led-accent-glow:   rgba(19, 165, 56, 0.40);\n  --led-warning:       var(--led-ignition-orange);\n\n  --led-bg:            var(--led-asphalt-teal);\n  --led-bg-panel:      #0a2f37;   /* Teal leicht aufgehellt fuer Panels */\n  --led-border:        #1c4651;\n  --led-text-primary:  #eaf3ee;\n  --led-text-muted:    #8fb3ad;\n\n  --led-select-ring:   var(--led-velocity-green);\n  --led-select-width:  2px;\n\n  /* Typografie: Magistral als Marke, Roboto als Web-Fallback */\n  --led-font:          \"Magistral\", \"Roboto\", system-ui, sans-serif;\n  --led-font-display:  \"Magistral\", \"Roboto\", system-ui, sans-serif;\n\n  /* Layout */\n  --led-radius:  8px;\n  --led-gap:     12px;\n}\n\n/* ===== ELEMENTS : Styling NUR ueber Variablen ===== */\n.poc-root {\n  background: var(--led-bg);\n  color: var(--led-text-primary);\n  font-family: var(--led-font-display);\n  padding: var(--led-gap);\n}\n.poc-group {\n  background: var(--led-bg-panel);\n  border: 1px solid var(--led-border);\n  border-radius: var(--led-radius);\n  padding: var(--led-gap);\n  margin-bottom: var(--led-gap);\n}\n.poc-group-title {\n  color: var(--led-text-primary);\n  font-family: var(--led-font);\n  margin: 0 0 var(--led-gap) 0;\n  font-size: 1rem;\n  letter-spacing: 0.02em;\n}\n.poc-el {\n  margin-bottom: var(--led-gap);\n}\n.el-toggle {\n  accent-color: var(--led-accent);\n}\n.el-button {\n  background: var(--led-accent) !important;\n  color: var(--led-asphalt-teal) !important;   /* dunkler Text auf Gruen = Marken-Look */\n  border-radius: var(--led-radius) !important;\n  box-shadow: 0 0 8px var(--led-accent-glow);\n  font-weight: 600;\n}\n.el-numeric,\n.el-dropdown,\n.el-output {\n  border-radius: var(--led-radius);\n}",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "site:style",
+        "className": "",
+        "x": 410,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "66087b63f6a20005",
+        "type": "debug",
+        "z": "a422b17cf7dde7df",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 400,
+        "wires": []
+    }
+]

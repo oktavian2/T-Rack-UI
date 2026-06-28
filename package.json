@@ -1,0 +1,26 @@
+{
+  "name": "t-rack-ui",
+  "version": "1.0.0",
+  "description": "\"# T-Rack-UI\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node-red -u ./resources -p 1880",
+    "watch": "node C:/Repos/functions-templates-manager/functions-templates-watch --flows-file ./resources/flows.json --server-at http://127.0.0.1:1880"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oktavian2/T-Rack-UI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/oktavian2/T-Rack-UI/issues"
+  },
+  "homepage": "https://github.com/oktavian2/T-Rack-UI#readme",
+  "dependencies": {
+    "node-red": "^4.1.10"
+  }
+}
