@@ -40,7 +40,8 @@ function expand(view, slot, prefix, io) {
                     cssClass:  reg.cssClass,
                     emits:     reg.emits,
                     defaults:  reg.defaults || {},
-                    value:     el.default !== undefined ? el.default : null
+                    value:     el.default !== undefined ? el.default : null,
+                    colSpan:   el.colSpan || 1
                 }));
 
                 instances[topic] = {
@@ -61,7 +62,7 @@ function expand(view, slot, prefix, io) {
                 }
             }
         }
-        groups.push({ title: g.title, elements: els });
+        groups.push({ title: g.title, columns: g.columns || 1, elements: els });
     }
     return { groups: groups };
 }

@@ -166,10 +166,11 @@ flow.set("schemas", {
                     },
                     {
                         title: "dropdown \u2014 Auswahl aus festen Optionen",
+                        columns: 5,
                         elements: [
                             { id: "mode", type: "dropdown", label: "Betriebsmodus",
                               options: ["Auto", "Manuell", "Aus"], default: "Auto",
-                              onChange: "demoConfig", commit: "onSave" },
+                              onChange: "demoConfig", commit: "onSave", colSpan: 2 },
                             { id: "range", type: "dropdown", label: "Bereich {ch}",
                               repeat: "channels", options: ["niedrig", "mittel", "hoch"], default: "mittel",
                               onChange: "demoConfig", commit: "onSave" }
@@ -195,6 +196,7 @@ flow.set("schemas", {
                     },
                     {
                         title: "Noch was - durcheinander",
+                        columns: 2,
                         elements: [
                             { id: "gauge1",    type: "gauge",   label: "Drehzahl",   unit: "rpm", min: 0, max: 5000, rw: "read", onChange: "demoRead" },
                             { id: "gauge2",    type: "gauge",   label: "Drehmoment", unit: "Nm",  min: 0, max: 350,  rw: "read", onChange: "demoRead" },

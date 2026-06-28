@@ -7,7 +7,10 @@
     <div v-for="t in tabs" :key="t.tabId" v-show="active === t.tabId" class="poc-tab">
       <div v-for="g in t.user.groups" :key="g.title" class="poc-group">
         <h3 class="poc-group-title">{{ g.title }}</h3>
-        <div v-for="el in g.elements" :key="el.topic" class="poc-el">
+        <div :class="['poc-elements', g.columns > 1 ? 'poc-elements--grid' : '']"
+             :style="g.columns > 1 ? `grid-template-columns: repeat(${g.columns}, 1fr)` : ''">
+        <div v-for="el in g.elements" :key="el.topic" class="poc-el"
+             :style="el.colSpan > 1 ? `grid-column: span ${el.colSpan}` : ''">
           <component
             v-if="el.component"
             :is="el.component"
@@ -89,6 +92,7 @@
               <v-btn class="el-stepper__btn" density="compact" @click="onStep(el, +1)">+</v-btn>
             </div>
           </template>
+        </div>
         </div>
       </div>
     </div>
