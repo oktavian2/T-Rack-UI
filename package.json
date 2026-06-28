@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node-red -u ./resources -p 1880",
-    "watch": "node C:/Repos/functions-templates-manager/functions-templates-watch --flows-file ./resources/flows.json --server-at http://127.0.0.1:1880"
+    "watch": "node /Users/max/Repos/functions-templates-manager/functions-templates-watch.js --flows-file ./resources/flows.json --server-at http://127.0.0.1:1880"
   },
   "repository": {
     "type": "git",
