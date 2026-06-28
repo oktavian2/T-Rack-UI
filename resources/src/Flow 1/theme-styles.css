@@ -1,0 +1,62 @@
+/* ============================================================
+   theme-styles
+   NUR Variablen-Definitionen — kein strukturelles CSS hier.
+   Wer den Style aendern will, aendert NUR diese Datei.
+   Alle Variablen die hier stehen werden in elements-styles benutzt.
+   ============================================================ */
+
+:root {
+  /* === Basis-Farben (Drive Net Lab Corporate Design) === */
+  --color-accent:      #13a538;   /* Velocity Green */
+  --color-accent-2:    #afcb37;   /* Volt Lime */
+  --color-warning:     #ec6726;   /* Ignition Orange */
+  --color-bg:          #012229;   /* Asphalt Teal */
+  --color-surface:     #0a2f37;
+  --color-border:      #1c4651;
+  --color-text:        #eaf3ee;
+  --color-text-muted:  #8fb3ad;
+
+  /* === Geometrie === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* === Abstände === */
+  --spacing-xs: 2px;
+  --spacing-sm: 6px;
+  --spacing-md: 12px;
+  --spacing-lg: 20px;
+
+  /* === Layout-Tokens === */
+  --layout-padding:    var(--spacing-md);
+  --layout-group-gap:  var(--spacing-md);
+  --layout-title-size: 0.85rem;
+  --el-spacing:        var(--spacing-sm);
+
+  /* === el-toggle === */
+  --el-toggle-color: var(--color-accent);
+
+  /* === el-button === */
+  --el-button-bg:     var(--color-accent);
+  --el-button-text:   var(--color-bg);
+  --el-button-radius: var(--radius-sm);
+  --el-button-glow:   rgba(19, 165, 56, 0.40);
+
+  /* === el-fields (numeric, dropdown, output) === */
+  --el-field-border:  var(--color-border);
+  --el-field-radius:  var(--radius-sm);
+  --el-output-bg:     rgba(0, 0, 0, 0.25);
+
+  /* === el-led === */
+  --el-led-size:    10px;
+  --el-led-spacing: 5px;
+  --el-led-glow:    6px;
+  --el-led-on:      var(--color-accent);
+  --el-led-off:     #1a3a40;
+
+  /* === el-status-panel === */
+  --el-panel-border:  var(--color-border);
+  --el-panel-radius:  var(--radius-md);
+  --el-panel-padding: var(--spacing-md);
+  --el-panel-bg:      rgba(255, 255, 255, 0.03);
+}

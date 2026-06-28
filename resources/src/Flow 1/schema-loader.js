@@ -1,11 +1,11 @@
 // ============================================================
 // FUNCTION NODE: schema-loader
-// Eingang:  discovery-mock
+// Eingang:  action-registry
 // Ausgang:  -> instance-builder
 // ------------------------------------------------------------
-// PoC: Schemas + Registry + Actions inline.
-// Spaeter: aus cards/*.json + registry/elements.json laden
-//          (file in / fs-Modul) statt inline.
+// PoC: Karten-Schemas inline.
+// Spaeter: per WebSocket vom Backend empfangen.
+// Registry und Actions sind in separaten Nodes.
 // ============================================================
 
 // ---- Karten-Schemas ----------------------------------------
@@ -122,6 +122,22 @@ flow.set("schemas", {
                             { id: "value", type: "output", label: "Messwert {ch}",
                               repeat: "channels", rw: "read", onChange: "demoRead" }
                         ]
+                    },
+                    {
+                        title: "led / badge / status-panel \u2014 komplexe Elemente",
+                        elements: [
+                            { id: "fb",       type: "led",          label: "R\u00fcckm. {ch}",
+                              repeat: "channels", rw: "read", onChange: "demoRead" },
+                            { id: "status",   type: "badge",        label: "Systemstatus",
+                              rw: "read", onChange: "demoRead" },
+                            { id: "overview", type: "status-panel", label: "\u00dcbersicht",
+                              ledCount: 4,
+                              buttons: [
+                                  { id: "reset", label: "Reset", action: "demoAction" },
+                                  { id: "test",  label: "Test",  action: "demoAction" }
+                              ]
+                            }
+                        ]
                     }
                 ]
             },
@@ -165,42 +181,6 @@ flow.set("schemas", {
         }
     }
 
-});
-
-// ---- Element-Registry (Aufbau / Defaults / cssClass) -------
-flow.set("registry", {
-    toggle:   { component: "v-switch",     cssClass: "el-toggle",
-                defaults: { color: "var(--accent)", inset: true, hideDetails: true },
-                emits: "update:modelValue" },
-    button:   { component: "v-btn",        cssClass: "el-button",
-                defaults: { variant: "flat" },
-                emits: "click" },
-    numeric:  { component: "v-text-field", cssClass: "el-numeric",
-                defaults: { type: "number", variant: "outlined", density: "compact", hideDetails: true },
-                emits: "update:modelValue" },
-    dropdown: { component: "v-select",     cssClass: "el-dropdown",
-                defaults: { variant: "outlined", density: "compact", hideDetails: true },
-                emits: "update:modelValue" },
-    output:   { component: "v-text-field", cssClass: "el-output",
-                defaults: { readonly: true, variant: "plain", density: "compact", hideDetails: true },
-                emits: "update:modelValue" }
-});
-
-// ---- Action-Registry (Verhalten bei Interaktion) -----------
-flow.set("actions", {
-    writeRelay:    function (c) { return { target: "io",     op: "write",  addr: c.addr, value: c.value }; },
-    setMode:       function (c) { return { target: "io",     op: "config", addr: c.addr, field: "mode",       value: c.value }; },
-    setDebounce:   function (c) { return { target: "io",     op: "config", addr: c.addr, field: "debounce",   value: c.value }; },
-    setRange:      function (c) { return { target: "io",     op: "config", addr: c.addr, field: "range",      value: c.value }; },
-    setSampleRate: function (c) { return { target: "io",     op: "config", addr: c.addr, field: "samplerate", value: c.value }; },
-    readCurrent:   function (c) { return { target: "io",     op: "read",   addr: c.addr }; },
-    startLog:      function (c) { return { target: "logger", op: "start",  slot: c.slot }; },
-
-    // ---- Demo-Karte ----
-    demoWrite:     function (c) { return { target: "io",     op: "write",  addr: c.addr, value: c.value }; },
-    demoConfig:    function (c) { return { target: "io",     op: "config", addr: c.addr, value: c.value }; },
-    demoRead:      function (c) { return { target: "io",     op: "read",   addr: c.addr }; },
-    demoAction:    function (c) { return { target: "logger", op: "action", addr: c.addr }; }
 });
 
 return msg;

@@ -20,6 +20,7 @@
         <h3 class="poc-group-title">{{ g.title }}</h3>
         <div v-for="el in g.elements" :key="el.topic" class="poc-el">
           <component
+            v-if="el.component"
             :is="el.component"
             :class="el.cssClass"
             :label="el.label"
@@ -29,6 +30,35 @@
             :model-value="state[el.topic] !== undefined ? state[el.topic] : el.value"
             @[el.emits]="v => onEvent(el, v)"
           >{{ el.type === 'button' ? el.label : '' }}</component>
+
+          <template v-else-if="el.template === 'led'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <span :class="['el-led', state[el.topic] ? 'el-led--on' : 'el-led--off']"></span>
+          </template>
+
+          <template v-else-if="el.template === 'badge'">
+            <span class="poc-el__label">{{ el.label }}</span>
+            <span :class="['el-badge', 'el-badge--' + (state[el.topic] || 'unknown')]">
+              {{ state[el.topic] || '—' }}
+            </span>
+          </template>
+
+          <template v-else-if="el.template === 'status-panel'">
+            <div class="el-status-panel">
+              <span class="el-status-panel__label">{{ el.label }}</span>
+              <div class="el-status-panel__leds">
+                <span v-for="i in el.ledCount" :key="i"
+                      :class="['el-led', state[el.topic+'/led/'+i] ? 'el-led--on' : 'el-led--off']" />
+              </div>
+              <div class="el-status-panel__output">{{ state[el.topic+'/output'] ?? '—' }}</div>
+              <div class="el-status-panel__buttons">
+                <v-btn v-for="btn in el.buttons" :key="btn.id" class="el-button"
+                       @click="onEvent({...el, topic: el.topic+'/'+btn.id}, true)">
+                  {{ btn.label }}
+                </v-btn>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node-red -u ./resources -p 1880",
-    "watch": "node /Users/max/Repos/functions-templates-manager/functions-templates-watch.js --flows-file ./resources/flows.json --server-at http://127.0.0.1:1880"
+    "watch": "node ./tools/functions-templates-watch.js --flows-file ./resources/flows.json --server-at http://127.0.0.1:1880"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,10 @@
   "homepage": "https://github.com/oktavian2/T-Rack-UI#readme",
   "dependencies": {
     "node-red": "^4.1.10"
+  },
+  "devDependencies": {
+    "chokidar": "^3.6.0",
+    "fs-extra": "^11.2.0",
+    "yargs": "^17.7.2"
   }
 }

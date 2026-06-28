@@ -36,6 +36,7 @@ function expand(view, slot, prefix, io) {
                     topic:     topic,
                     label:     (el.label || "").replace("{ch}", ch),
                     component: reg.component,
+                    template:  reg.template || null,
                     cssClass:  reg.cssClass,
                     emits:     reg.emits,
                     defaults:  reg.defaults || {},
@@ -48,6 +49,16 @@ function expand(view, slot, prefix, io) {
                     action: el.onChange || el.onClick || null,
                     commit: el.commit || "immediate"
                 };
+
+                // Status-Panel: Button-Sub-Topics im instances-Register eintragen
+                for (const btn of el.buttons || []) {
+                    instances[topic + "/" + btn.id] = {
+                        slot:   slot,
+                        addr:   topic + "/" + btn.id,
+                        action: btn.action,
+                        commit: "immediate"
+                    };
+                }
             }
         }
         groups.push({ title: g.title, elements: els });

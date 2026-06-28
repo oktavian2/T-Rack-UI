@@ -1,0 +1,131 @@
+/* ============================================================
+   elements-styles
+   Strukturelles CSS fuer alle Element-Typen.
+   KEINE hartkodierten Farben oder Radii — nur var(--...).
+   Tokens kommen ausschliesslich aus theme-styles.
+   ! Das ist ein Test !
+   ============================================================ */
+
+/* ===== Layout ===== */
+.poc-root {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Magistral", "Roboto", system-ui, sans-serif;
+  padding: var(--layout-padding);
+}
+.poc-group {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--layout-padding);
+  margin-bottom: var(--layout-group-gap);
+}
+.poc-group-title {
+  color: var(--color-text);
+  font-size: var(--layout-title-size);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 var(--spacing-sm) 0;
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+}
+.poc-el {
+  display: flex;
+  align-items: center;
+  gap: var(--el-spacing);
+  padding: var(--spacing-xs) 0;
+}
+
+/* ===== el-toggle ===== */
+.el-toggle {
+  accent-color: var(--el-toggle-color);
+}
+
+/* ===== el-button ===== */
+.el-button {
+  background-color: var(--el-button-bg) !important;
+  color: var(--el-button-text) !important;
+  border-radius: var(--el-button-radius) !important;
+  box-shadow: 0 0 8px var(--el-button-glow) !important;
+  font-weight: 600;
+}
+
+/* ===== el-numeric / el-dropdown / el-output ===== */
+.el-numeric .v-field__outline,
+.el-dropdown .v-field__outline {
+  border-color: var(--el-field-border) !important;
+  border-radius: var(--el-field-radius) !important;
+}
+.el-output {
+  background: var(--el-output-bg);
+  border-radius: var(--el-field-radius);
+}
+
+/* ===== el-led ===== */
+.el-led {
+  display: inline-block;
+  width: var(--el-led-size);
+  height: var(--el-led-size);
+  border-radius: 50%;
+  background: var(--el-led-off);
+  transition: background 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+.el-led--on {
+  background: var(--el-led-on);
+  box-shadow: 0 0 var(--el-led-glow) var(--el-led-on);
+}
+
+/* ===== el-status-panel ===== */
+.el-status-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  border: 1px solid var(--el-panel-border);
+  border-radius: var(--el-panel-radius);
+  padding: var(--el-panel-padding);
+  background: var(--el-panel-bg);
+  width: 100%;
+}
+.el-status-panel__label {
+  font-size: var(--layout-title-size);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.el-status-panel__leds {
+  display: flex;
+  gap: var(--el-led-spacing);
+  align-items: center;
+}
+.el-status-panel__output {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  background: var(--el-output-bg);
+  border-radius: var(--el-field-radius);
+  padding: 2px 8px;
+  min-height: 1.6em;
+}
+.el-status-panel__buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* ===== el-badge ===== */
+.el-badge {
+  display: inline-block;
+  padding: 1px var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--el-badge-bg);
+  color: var(--el-badge-text);
+}
+.el-badge--ok      { --el-badge-bg: var(--el-badge-ok-bg);   --el-badge-text: var(--el-badge-ok-text); }
+.el-badge--warn    { --el-badge-bg: var(--el-badge-warn-bg);  --el-badge-text: var(--el-badge-warn-text); }
+.el-badge--err     { --el-badge-bg: var(--el-badge-err-bg);   --el-badge-text: var(--el-badge-err-text); }
+.el-badge--unknown { --el-badge-bg: var(--el-badge-off-bg);   --el-badge-text: var(--color-text-muted); }
